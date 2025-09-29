@@ -1,0 +1,28 @@
+LangChain is a framework for developing applications powered by large language models (LLMs).
+It provides a standard interface for chains, lots of integrations with other tools, and end-to-end chains for common applications.
+The core idea of the library is to "chain" together different components to create more advanced use cases around LLMs.
+
+FAISS (Facebook AI Similarity Search) is a library for efficient similarity search and clustering of dense vectors.
+It contains algorithms that search in sets of vectors of any size, up to ones that possibly do not fit in RAM.
+It is developed by Meta AI.
+
+# AI QA 서비스 기술 문서
+
+## 검색 증강 생성 (RAG)
+검색 증강 생성(Retrieval-Augmented Generation, RAG)은 거대 언어 모델(LLM)의 한계를 보완하기 위한 기술입니다. LLM이 학습하지 않은 최신 정보나 특정 도메인의 전문 지식에 대해 답변을 생성해야 할 때, 외부 데이터베이스에서 관련 정보를 실시간으로 검색하여 이를 참고 자료로 활용합니다. 이 방식은 AI가 사실이 아닌 내용을 그럴듯하게 지어내는 환각(Hallucination) 현상을 크게 줄여주고, 답변의 근거를 명확히 제시할 수 있다는 장점이 있습니다.
+
+## Perplexity AI API
+퍼플렉시티 AI는 실시간 웹 검색 기능이 통합된 강력한 언어 모델을 API 형태로 제공합니다. 다른 LLM들이 사전 학습된 데이터에만 의존하는 것과 달리, 퍼플렉시티의 '온라인' 모델들은 질문을 받으면 즉시 웹을 검색하여 최신 정보를 바탕으로 답변을 생성할 수 있습니다. 현재 API에서 사용할 수 있는 대표적인 모델로는 'sonar' 계열이 있습니다.
+
+## Django Framework
+장고(Django)는 파이썬으로 작성된 고수준 웹 프레임워크입니다. 신속한 개발과 깨끗하고 실용적인 설계를 장려하는 것이 특징입니다. "배터리 포함(Batteries-included)" 철학에 따라, 웹 개발에 필요한 대부분의 기능(ORM, 관리자 페이지, 인증 시스템 등)을 프레임워크 자체에 내장하고 있어 개발자가 부가적인 요소를 직접 만들 필요가 적습니다.
+
+
+dbSheet 란?
+企業特有業務の内製化で業務効率向上とコスト削減を実現
+Excel業務をシステム化するため、dbSheetは、Excelにデータベース機能とネットワーク機能を付加した開発支援ツールです。
+現場の管理帳票や数値管理をそのままシステム化し、利用者の負担を軽減します。
+予実管理、生産計画、発注管理など、変化の激しい計画系業務のDX化を支援。数百社に導入され、現場課題に寄り添いながら、柔軟な仕様変更やバージョンアップを実現できる点が高く評価されています。
+さらに、システムカイゼンを現場主導で進められる柔軟性も、dbSheetの特長のひとつです。
+
+
