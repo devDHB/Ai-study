@@ -26,6 +26,15 @@
         <div id="messages">
             <div class="message bot">안녕하세요! 무엇이 궁금하신가요?</div>
         </div>
+
+        <div id="upload-container" style="padding: 10px 20px; border-top: 1px solid #ccc;">
+            <form id="upload-form">
+                <input type="file" id="file-input" accept=".txt,.pdf">
+                <button type="submit">파일 업로드</button>
+            </form>
+            <div id="upload-status" style="margin-top: 5px; font-size: 0.9em;"></div>
+        </div>
+
         <form id="input-form">
             <input type="text" id="question-input" placeholder="질문을 입력하세요..." autocomplete="off">
             <button type="submit">전송</button>

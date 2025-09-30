@@ -22,3 +22,6 @@ db.sqlite3
 # OS 생성 파일
 .DS_Store
 Thumbs.db
+
+# 임시 업로드 파일
+temp_uploads/

@@ -130,4 +130,20 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS
-CORS_ALLOW_ALL_ORIGINS = True # 개발 중에는 모든 출처를 허용
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
+]
+CORS_ALLOW_CREDENTIALS = True # 쿠키를 포함한 요청을 허용합니다.
+
+# 세션 저장 방식을 데이터베이스가 아닌 파일 시스템으로 변경
+SESSION_ENGINE = 'django.contrib.sessions.backends.file'
+
+
+# 임시 RAG 인덱스를 저장할 캐시 설정
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    }
+}

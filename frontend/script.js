@@ -1,48 +1,104 @@
-// frontend/script.js
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('input-form');
-    const input = document.getElementById('question-input');
+    // --- 변수 정의 ---
+    const chatForm = document.getElementById('input-form');
+    const chatInput = document.getElementById('question-input');
     const messagesContainer = document.getElementById('messages');
-    const apiUrl = 'http://127.0.0.1:8000/api/ask/';
+    const chatApiUrl = 'http://127.0.0.1:8000/api/ask/';
 
-    form.addEventListener('submit', async (e) => {
+    const uploadForm = document.getElementById('upload-form');
+    const fileInput = document.getElementById('file-input');
+    const uploadStatus = document.getElementById('upload-status');
+    const uploadApiUrl = 'http://127.0.0.1:8000/api/upload/';
+
+    // 업로드된 파일의 고유 ID를 저장할 변수
+    let currentSessionId = null;
+
+    // --- 파일 업로드 로직 ---
+    uploadForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const question = input.value.trim();
+        const file = fileInput.files[0];
+        if (!file) {
+            uploadStatus.textContent = '파일을 선택해주세요.';
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        uploadStatus.textContent = `'${file.name}' 업로드 및 처리 중...`;
+        uploadForm.querySelector('button').disabled = true;
+
+        try {
+            const response = await fetch(uploadApiUrl, {
+                method: 'POST',
+                body: formData,
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || '업로드에 실패했습니다.');
+            }
+            
+            uploadStatus.textContent = data.message;
+            addMessage('파일이 업로드되었습니다. 이제 이 파일의 내용에 대해 질문할 수 있습니다.', 'bot');
+            fileInput.value = '';
+            
+            // 서버로부터 받은 세션 ID를 변수에 저장합니다.
+            currentSessionId = data.session_id;
+            console.log("New Session ID received:", currentSessionId);
+
+        } catch (error) {
+            console.error('Upload Error:', error);
+            uploadStatus.textContent = `오류: ${error.message}`;
+        } finally {
+            uploadForm.querySelector('button').disabled = false;
+        }
+    });
+
+    // --- 채팅 메시지 전송 로직 ---
+    chatForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const question = chatInput.value.trim();
         if (!question) return;
 
         addMessage(question, 'user');
-        input.value = '';
-
+        chatInput.value = '';
+        chatForm.querySelector('button').disabled = true;
         const botMessageDiv = addMessage('답변을 생성 중입니다...', 'bot');
 
         try {
-            const response = await fetch(apiUrl, {
+            // body에 세션 ID를 포함하여 전송합니다.
+            const payload = {
+                question: question,
+                session_id: currentSessionId // 저장해둔 세션 ID를 함께 보냅니다.
+            };
+
+            const response = await fetch(chatApiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ question: question }),
+                body: JSON.stringify(payload),
             });
 
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                const errorData = await response.json();
+                throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
             }
 
             const data = await response.json();
             
-            // --- 이 부분이 수정되었습니다 ---
-            // 1. 기존 로딩 메시지를 실제 답변으로 교체
-            //    답변 텍스트만 표시하도록 botMessageDiv의 첫 번째 자식 노드를 찾습니다.
             const answerTextNode = botMessageDiv.firstChild;
             answerTextNode.textContent = data.answer;
 
-            // 2. 출처(sources)가 있다면 화면에 추가
-            // AI가 "죄송합니다"라고 답변하지 않은, 유용한 답변일 경우에만 출처를 표시합니다.
             if (!data.answer.includes("죄송합니다") && data.sources && data.sources.length > 0) {
                 const sourcesContainer = document.createElement('div');
                 sourcesContainer.className = 'sources-container';
                 
                 const sourcesHeader = document.createElement('h4');
+                sourcesHeader.style.marginTop = '10px';
+                sourcesHeader.style.marginBottom = '5px';
                 sourcesHeader.textContent = '참고 자료:';
                 sourcesContainer.appendChild(sourcesHeader);
 
@@ -60,19 +116,21 @@ document.addEventListener('DOMContentLoaded', () => {
             botMessageDiv.firstChild.textContent = '오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
         } finally {
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            chatForm.querySelector('button').disabled = false;
         }
     });
 
+    // --- 메시지 화면에 추가하는 헬퍼 함수 ---
     function addMessage(text, sender) {
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${sender}`;
         
-        const textNode = document.createElement('span'); // 답변과 출처를 분리하기 위해 span으로 감쌉니다.
+        const textNode = document.createElement('span'); 
         textNode.textContent = text;
         messageDiv.appendChild(textNode);
         
         messagesContainer.appendChild(messageDiv);
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        return messageDiv; // div 전체를 반환
+        return messageDiv;
     }
 });
