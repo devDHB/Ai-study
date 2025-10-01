@@ -16,7 +16,6 @@
         #input-form button { padding: 10px 15px; margin-left: 10px; border: none; background-color: #007bff; color: white; border-radius: 5px; cursor: pointer; }
 
         .bot { background-color: #e9e9eb; color: black; align-self: flex-start; }
-        /* 아래 스타일 추가 */
         .sources-container { margin-top: 10px; }
         .source { font-size: 0.8em; background-color: #f4f4f9; border: 1px solid #ddd; border-radius: 5px; padding: 8px; margin-bottom: 5px; white-space: pre-wrap; }
     </style>
@@ -24,20 +23,20 @@
 <body>
     <div id="chat-container">
         <div id="messages">
-            <div class="message bot">안녕하세요! 무엇이 궁금하신가요?</div>
+            <div class="message bot">質問してください。</div>
         </div>
 
         <div id="upload-container" style="padding: 10px 20px; border-top: 1px solid #ccc;">
             <form id="upload-form">
                 <input type="file" id="file-input" accept=".txt,.pdf">
-                <button type="submit">파일 업로드</button>
+                <button type="submit">ファイルアップロード</button>
             </form>
             <div id="upload-status" style="margin-top: 5px; font-size: 0.9em;"></div>
         </div>
 
         <form id="input-form">
-            <input type="text" id="question-input" placeholder="질문을 입력하세요..." autocomplete="off">
-            <button type="submit">전송</button>
+            <input type="text" id="question-input" placeholder="質問入力" autocomplete="off">
+            <button type="submit">送信</button>
         </form>
     </div>
     <script src="script.js"></script>

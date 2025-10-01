@@ -41,13 +41,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',   # 추가
-    'qa_service',       # 추가
-    'corsheaders',      # 추가
+    'rest_framework',   # 追加
+    'qa_service',       # 追加
+    'corsheaders',      # 追加
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',  # 추가
+    'corsheaders.middleware.CorsMiddleware',  # 追加
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -134,13 +134,12 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
     "http://127.0.0.1:8080",
 ]
-CORS_ALLOW_CREDENTIALS = True # 쿠키를 포함한 요청을 허용합니다.
+CORS_ALLOW_CREDENTIALS = True # クッキーを含むリクエストを許可します。
 
-# 세션 저장 방식을 데이터베이스가 아닌 파일 시스템으로 변경
+# セッション保存方式をデータベースではなくファイルシステムに変更
 SESSION_ENGINE = 'django.contrib.sessions.backends.file'
 
-
-# 임시 RAG 인덱스를 저장할 캐시 설정
+# 一時RAGインデックスを保存するキャッシュ設定
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
